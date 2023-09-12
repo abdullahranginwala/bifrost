@@ -4,6 +4,7 @@ import {json} from 'body-parser';
 import mongoose from 'mongoose';
 import connectDB from "./config/db";
 import * as dotenv from "dotenv";
+import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const PORT= process.env.PORT || 3000;
 connectDB()
 
 app.use(express.json());
+app.use(errorHandler);
 
 const server=app.listen(
     PORT,()=>{
