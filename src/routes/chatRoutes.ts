@@ -1,7 +1,10 @@
 import { Chat } from '../models/Chat';
 import { authenticate } from '../middleware/auth';
+import { Router } from 'express'
 
-app.post('/send', authenticate, async (req, res) => {
+export const router = Router();
+
+router.post('/send', authenticate, async (req, res) => {
     const { recipientId, content } = req.body;
     let chat = await Chat.findOne({ participants: { $all: [req.userId, recipientId] } });
 
@@ -19,7 +22,7 @@ app.post('/send', authenticate, async (req, res) => {
     res.status(201).send('Message sent');
 });
 
-app.post('/create-group', authenticate, async (req, res) => {
+router.post('/create-group', authenticate, async (req, res) => {
     const { participants } = req.body;
 
     const chat = new Chat({ participants, messages: [] });

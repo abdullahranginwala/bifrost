@@ -1,14 +1,15 @@
-import mongoose from "mongoose";
+import { Document, Schema, model } from "mongoose";
+import { IUser } from "./User";
+import { IMessage } from "./Message";
 
-const chatSchema = new mongoose.Schema({
-    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    messages: [
-        {
-            sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-            content: String,
-            timestamp: Date,
-        }
-    ],
+export interface IChat extends Document {
+    participants: IUser['_id'][];
+    messages: IMessage[];
+}
+
+const chatSchema = new Schema<IChat>({
+    participants: [{type:Schema.Types.ObjectId, ref: 'User'}],
+    messages: [{type:Schema.Types.ObjectId, ref: 'Message'}],
 });
 
-export const Chat = mongoose.model('Chat', chatSchema);
+export const Chat = model<IChat>('Chat', chatSchema);
