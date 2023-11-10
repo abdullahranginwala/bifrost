@@ -1,31 +1,43 @@
 import { Chat } from '../models/Chat';
 import { authenticate } from '../middleware/auth';
 import { Router } from 'express'
+import { IMessage, Message } from '../models/Message';
 
-export const router = Router();
+export const chatRouter = Router();
 
-router.post('/send', authenticate, async (req, res) => {
-    const { recipientId, content } = req.body;
-    let chat = await Chat.findOne({ participants: { $all: [req.userId, recipientId] } });
+chatRouter.post('/send', authenticate, async (req, res) => {
+    try {
+        const { userId, chatId, content } = req.body;
 
-    if (!chat) {
-        chat = new Chat({ participants: [req.userId, recipientId], messages: [] });
+        const chat = await Chat.findById(chatId);
+
+        if (!chat) {
+            return res.status(404).send('Chat not found');
+        }
+
+        const isParticipant = chat.participants.includes(userId);
+        if (!isParticipant) {
+            return res.status(403).send('User is not a participant of the chat');
+        }
+
+        const message = new Message({
+            sender: userId,
+            content,
+            chat: chatId
+        });
+        await message.save();
+
+        res.status(201).send('Message sent');
+    } catch (error) {
+        // Handle possible errors
+        res.status(500).send('Internal Server Error');
     }
-
-    chat.messages.push({
-        sender: req.userId,
-        content,
-        timestamp: new Date(),
-    });
-
-    await chat.save();
-    res.status(201).send('Message sent');
 });
 
-router.post('/create-group', authenticate, async (req, res) => {
-    const { participants } = req.body;
+chatRouter.post('/create-group', authenticate, async (req, res) => {
+    const { name, userIds } = req.body;
 
-    const chat = new Chat({ participants, messages: [] });
+    const chat = new Chat({ name, participants:userIds });
     await chat.save();
 
     res.status(201).send('Group created');

@@ -1,8 +1,11 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User';
+import { Router } from 'express';
 
-app.post('/register', async (req, res) => {
+export const router = Router();
+
+router.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -16,7 +19,7 @@ app.post('/register', async (req, res) => {
     res.status(201).send('User registered');
 });
 
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });

@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import connectDB from "./config/db";
 import * as dotenv from "dotenv";
 import { errorHandler } from "./middleware/errorHandler";
+import { chatRouter } from "./routes/chatRoutes";
+import { router } from "./routes/userRoutes";
 
 dotenv.config();
 
@@ -15,7 +17,8 @@ const PORT= process.env.PORT || 3000;
 connectDB()
 
 app.use(express.json());
-app.use(errorHandler);
+app.use(chatRouter);
+app.use(router);
 
 const server=app.listen(
     PORT,()=>{
