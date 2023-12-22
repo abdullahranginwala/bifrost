@@ -1,6 +1,5 @@
 import { Document, Schema, model } from "mongoose";
 import { IUser } from "./User";
-import { IMessage } from "./Message";
 
 export interface IChat extends Document {
     name?: String,

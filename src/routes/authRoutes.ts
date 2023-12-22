@@ -7,7 +7,6 @@ import * as bcrypt from "bcrypt";
 const authRouter = Router();
 
 authRouter.post("/signup", async (req, res) => {
-    console.log("Hello");
     try {
       // hash the password
       req.body.password = await bcrypt.hash(req.body.password, 10);
