@@ -2,15 +2,17 @@ FROM node:16
 
 WORKDIR /usr/src/app
 
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
+# Install dependencies including 'devDependencies'
 RUN npm install
 
-COPY tsconfig.json ./
-COPY src ./src
+# Copy the source code
+COPY . .
 
-RUN npm run build
-
+# Expose the port the app runs on
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+# Start the application using nodemon for development
+CMD ["npm", "run", "dev"]

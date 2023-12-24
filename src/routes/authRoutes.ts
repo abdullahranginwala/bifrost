@@ -2,7 +2,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 
 const authRouter = Router();
 

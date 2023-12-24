@@ -135,5 +135,6 @@ wss.on('connection', async (ws, req) =>  {
 
 // Start the server
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`This is server ${SERVER_ID}`);
+  // console.log(`Server is running on port ${PORT}`);
 });
