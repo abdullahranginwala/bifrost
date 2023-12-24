@@ -30,6 +30,4 @@ To run the project in development mode with live reloading:
 1. **Start the development environment:**
 `docker-compose up`
 2. **Access the application:** 
-* App Instance 1: `http://localhost:3001`
-* App Instance 2: `http://localhost:3002`
-* App Instance 3: `http://localhost:3003`
+The application is accessible at `http://localhost:80` through the Nginx load balancer.
